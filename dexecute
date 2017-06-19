@@ -1,0 +1,19 @@
+currentFull=${PWD}
+currentName=`basename $currentFull`
+parentFull=`dirname $currentFull`
+parentName=`basename $parentFull`
+mafia=~/.mafia-d
+cabal=~/.cabal-d
+loom=~/.loom-d
+mkdir -p ${mafia}
+mkdir -p ${cabal}
+mkdir -p ${loom}
+
+command=$1
+shift
+rest=$@
+
+
+docker run -v ~/.ssh:/home/.ssh -v ${mafia}:/home/.mafia -v ${cabal}:/home/.cabal -v ${loom}:/home/.loom -v ${parentFull}:/home/${parentName} -w /home/${parentName}/${currentName} -it mafia-docker bash -c "$command $rest"
+
+#docker run -v $SSH_AUTH_SOCK:/ssh-agent -e SSH_AUTH_SOCK=/ssh-agent -v ${mafia}:/home/.mafia -v ${cabal}:/home/.cabal -v ${loom}:/home/.loom -v ${parentFull}:/home/${parentName} -w /home/${parentName}/${currentName} -it mafia-docker bash -c "$command $rest"
